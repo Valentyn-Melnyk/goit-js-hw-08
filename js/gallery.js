@@ -70,13 +70,13 @@ const imagesList = document.querySelector('.gallery');
 function createGallery(images) {
   return images
     .map(
-      el => `<li class="gallery-item">
-  <a class="gallery-link" href="${el.original}">
+      ({ preview, original, description }) => `<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
     <img
       class="gallery-image"
-      src="${el.preview}"
-      data-source="${el.original}"
-      alt="${el.description}"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
       role="button"
     />
   </a>
