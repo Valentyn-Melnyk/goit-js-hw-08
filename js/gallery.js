@@ -66,18 +66,17 @@ const images = [
 
 const imagesList = document.querySelector('.gallery');
 
-// 2- Шаблонний рядок
+// 2 варіант виконання - Шаблонний рядок
 function createGallery(images) {
   return images
     .map(
       ({ preview, original, description }) => `<li class="gallery-item">
-  <a class="gallery-link" href="${original}">
+  <a class="gallery-link" href="${original}" role="button">
     <img
       class="gallery-image"
       src="${preview}"
       data-source="${original}"
       alt="${description}"
-      role="button"
     />
   </a>
 </li>`,
@@ -86,7 +85,7 @@ function createGallery(images) {
 }
 imagesList.innerHTML = createGallery(images);
 
-// 1 - createElement
+// 1 варіант виконання - createElement
 // function createGallery(imagesArr) {
 //   const arrayElementLi = [];
 //   imagesArr.forEach(el => {
