@@ -66,46 +66,68 @@ const images = [
 
 const imagesList = document.querySelector('.gallery');
 
-function createGallery(imagesArr) {
-  imagesArr.forEach(el => {
-    const galleryItemLi = document.createElement('li');
-    galleryItemLi.classList.add('gallery-item');
-
-    const galleryLink = document.createElement('a');
-    galleryLink.classList.add('gallery-link');
-    galleryLink.href = el.original;
-
-    const galleryImage = document.createElement('img');
-    galleryImage.classList.add('gallery-image');
-    galleryImage.src = el.preview;
-    galleryImage.dataset.source = el.original;
-    galleryImage.alt = el.description;
-    galleryImage.width = '360';
-
-    galleryLink.append(galleryImage);
-    galleryItemLi.append(galleryLink);
-    imagesList.append(galleryItemLi);
-  });
-  return imagesList;
+// 2- Шаблонний рядок
+function createGallery(images) {
+  return images
+    .map(
+      el => `<li class="gallery-item">
+  <a class="gallery-link" href="${el.original}">
+    <img
+      class="gallery-image"
+      src="${el.preview}"
+      data-source="${el.original}"
+      alt="${el.description}"
+      role="button"
+    />
+  </a>
+</li>`,
+    )
+    .join('');
 }
+imagesList.innerHTML = createGallery(images);
 
-createGallery(images);
+// 1 - createElement
+// function createGallery(imagesArr) {
+//   const arrayElementLi = [];
+//   imagesArr.forEach(el => {
+//     const galleryItemLi = document.createElement('li');
+//     galleryItemLi.classList.add('gallery-item');
+
+//     const galleryLink = document.createElement('a');
+//     galleryLink.classList.add('gallery-link');
+//     galleryLink.href = el.original;
+
+//     const galleryImage = document.createElement('img');
+//     galleryImage.classList.add('gallery-image');
+//     galleryImage.src = el.preview;
+//     galleryImage.dataset.source = el.original;
+//     galleryImage.alt = el.description;
+//     galleryImage.setAttribute('role', 'button');
+
+//     galleryLink.append(galleryImage);
+//     galleryItemLi.append(galleryLink);
+//     arrayElementLi.push(galleryItemLi);
+//   });
+//   imagesList.append(...arrayElementLi);
+//   return imagesList;
+// }
+// createGallery(images);
 
 imagesList.addEventListener('click', function (event) {
   event.preventDefault();
-
-  if (event.target.nodeName === 'IMG') {
+  // event.target.nodeName === 'IMG'
+  if (event.target !== event.currentTarget) {
     const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}">
+    <img src="${event.target.dataset.source}" alt="${event.target.description}">
   `);
     instance.show();
 
-    document.addEventListener('keydown', e => {
-      if (e.code === 'Escape') instance.close();
-    });
-
-    // instance.close(() => console.log('lightbox not visible anymore'));
-
-    console.log(event.target.dataset.source); // посилання на велике зображення, на якому відбулась подія click
+    const handleClickEscape = event => {
+      if (event.code === 'Escape') {
+        instance.close();
+        document.removeEventListener('keydown', handleClickEscape);
+      }
+    };
+    document.addEventListener('keydown', handleClickEscape);
   }
 });
