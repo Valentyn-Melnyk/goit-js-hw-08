@@ -85,7 +85,7 @@ function createGallery(images) {
 }
 imagesList.innerHTML = createGallery(images);
 
-// 1 варіант виконання - createElement
+// 1 варіант виконання - createElement (ще є const container = document.createDocumentFragment();)
 // function createGallery(imagesArr) {
 //   const arrayElementLi = [];
 //   imagesArr.forEach(el => {
